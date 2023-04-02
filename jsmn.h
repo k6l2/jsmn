@@ -21,6 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+#ifdef JSMN_HEADER
+
 #ifndef JSMN_H
 #define JSMN_H
 
@@ -31,9 +33,9 @@ extern "C" {
 #endif
 
 #ifdef JSMN_STATIC
-#define JSMN_API static
+  #define JSMN_API static
 #else
-#define JSMN_API extern
+  #define JSMN_API extern
 #endif
 
 /**
@@ -98,8 +100,15 @@ JSMN_API void jsmn_init(jsmn_parser *parser);
  */
 JSMN_API int jsmn_parse(jsmn_parser *parser, const char *js, const size_t len,
                         jsmntok_t *tokens, const unsigned int num_tokens);
-
-#ifndef JSMN_HEADER
+                        
+#ifdef __cplusplus
+}
+#endif
+#endif /* JSMN_H */
+#else /* JSMN_HEADER */
+#ifdef __cplusplus
+extern "C" {
+#endif
 /**
  * Allocates a fresh unused token from the token pool.
  */
@@ -461,11 +470,7 @@ JSMN_API void jsmn_init(jsmn_parser *parser) {
   parser->toknext = 0;
   parser->toksuper = -1;
 }
-
-#endif /* JSMN_HEADER */
-
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* JSMN_H */
+#endif /* JSMN_HEADER */
